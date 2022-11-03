@@ -1,6 +1,5 @@
 package kosamidas.hackathon.domain.user.presentation;
 
-import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.AdminService;
 import kosamidas.hackathon.domain.user.service.UserService;

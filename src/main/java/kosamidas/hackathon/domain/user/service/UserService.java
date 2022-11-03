@@ -1,6 +1,5 @@
 package kosamidas.hackathon.domain.user.service;
 
-import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
@@ -36,4 +35,5 @@ public class UserService {
                 .map(UserResponseDto::new)
                 .collect(Collectors.toList());
     }
+
 }

@@ -1,5 +1,6 @@
 package kosamidas.hackathon.domain.user.domain;
 
+import kosamidas.hackathon.domain.commute.domain.Commute;
 import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
 import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
@@ -17,9 +18,10 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import static javax.persistence.CascadeType.*;
 import static javax.persistence.EnumType.STRING;
 
 @Getter
@@ -70,17 +72,11 @@ public class User extends BaseTimeEntity {
     @Enumerated(STRING)
     private HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
 
-    // 출근날짜
-    private LocalDate officeWentDate;
-
-    // 출근시간
-    private LocalDateTime officeWentAt;
-
-    // 퇴근시간
-    private LocalDateTime quitedTime;
+    @OneToMany(mappedBy = "user", cascade = ALL)
+    private final List<Commute> commutes = new ArrayList<>();
 
     @Builder
-    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus, HomeStatus homeStatus, LocalDate officeWentDate, LocalDateTime officeWentAt, LocalDateTime quitedTime) {
+    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus, HomeStatus homeStatus) {
         this.authId = authId;
         this.password = password;
         this.name = name;
@@ -88,9 +84,6 @@ public class User extends BaseTimeEntity {
         this.authority = authority;
         this.signupStatus = signupStatus;
         this.homeStatus = homeStatus;
-        this.officeWentDate = officeWentDate;
-        this.officeWentAt = officeWentAt;
-        this.quitedTime = quitedTime;
     }
 
     // auth TODO : Validate 클래스로 분리하고 싶음
@@ -109,19 +102,6 @@ public class User extends BaseTimeEntity {
     public void updatePassword(String password) {
         this.password = password;
     }
-
-    public void updateOfficeWentDate(LocalDate officeWentDate) {
-        this.officeWentDate = officeWentDate;
-    }
-
-    public void updateOfficeWentAt(LocalDateTime officeWentAt) {
-        this.officeWentAt = officeWentAt;
-    }
-
-    public void updateQuitedTime(LocalDateTime quitedTime) {
-        this.quitedTime = quitedTime;
-    }
-
     public void updateSignupStatus(String signupStatus) {
         this.signupStatus = SignupStatus.valueOf(signupStatus);
     }
@@ -129,4 +109,5 @@ public class User extends BaseTimeEntity {
     public void updateAuthority(String authority) {
         this.authority = Authority.valueOf(authority);
     }
+
 }
