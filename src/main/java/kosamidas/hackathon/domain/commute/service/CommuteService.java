@@ -35,10 +35,11 @@ public class CommuteService {
             Commute commute = Commute.builder()
                     .officeWentDate(LocalDate.now())
                     .officeWentAt(LocalDateTime.now())
+                    .quitedTime(LocalDateTime.now())
+                    .week(getWeek())
                     .build();
             commute.confirmUser(user);
             commute.updateWalkingWhether();
-            commute.updateWeek(getWeek());
             commuteFacade.save(commute);
         }
     }
@@ -78,22 +79,18 @@ public class CommuteService {
         return new OnEightHourBasisResponseDto(480 - between);
     }
 
-    // 이번주에 남은 근무시간
     public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek(String authId) {
-        // 1. 근무 시간을 모두 구함
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()
                 .filter(commute -> commute.getUser().getAuthId().equals(authId))
                 .filter(commute -> commute.getWeek() == getWeek())
                 .collect(Collectors.toList());
 
-        // 2. 근무 시간을 모두 더함
         long result = 0;
         for (Commute commute : commutes) {
             result += ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
         }
 
-        // 3. 40 - 2번
         return new RemainingMinutesOfWorkResponseDto(2400 - result);
     }
 }
