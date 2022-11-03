@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Validated
@@ -47,6 +49,11 @@ public class UserController {
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
     ) {
         return userService.getDateInfo(date);
+    }
+
+    @PutMapping("/update/img")
+    public void uploadImg(@RequestParam("data") MultipartFile multipartFile) throws IOException {
+        userService.updateImg(multipartFile);
     }
 
 }

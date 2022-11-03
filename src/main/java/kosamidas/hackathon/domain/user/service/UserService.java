@@ -12,9 +12,13 @@ import kosamidas.hackathon.domain.user.presentation.dto.res.UserCommuteDateRespo
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.verifier.CreateUserVerifier;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
+import kosamidas.hackathon.infrastructure.file.FileResponseDto;
+import kosamidas.hackathon.infrastructure.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +31,7 @@ public class UserService {
 
     private final UserFacade userFacade;
     private final CommuteFacade commuteFacade;
+    private final S3Uploader s3Uploader;
 
     @Transactional
     public void createUser(SignupUserRequestDto req) {
@@ -88,5 +93,13 @@ public class UserService {
                 .findFirst();
 
         return commuteOptional.map(UserCommuteDateResponseDto::new).orElse(null);
+    }
+
+    @Transactional
+    public void updateImg(MultipartFile multipartFile) throws IOException {
+        User user = userFacade.getCurrentUser();
+        FileResponseDto fileResponseDto = s3Uploader.saveFile(multipartFile);
+        user.updateFile(fileResponseDto.getImgPath(), fileResponseDto.getImgUrl());
+        userFacade.save(user);
     }
 }

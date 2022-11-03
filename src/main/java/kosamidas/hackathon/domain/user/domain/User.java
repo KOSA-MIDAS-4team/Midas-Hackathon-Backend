@@ -37,7 +37,8 @@ import static javax.persistence.EnumType.STRING;
 @Entity
 public class User extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
@@ -104,6 +105,7 @@ public class User extends BaseTimeEntity {
     public void updatePassword(String password) {
         this.password = password;
     }
+
     public void updateSignupStatus(String signupStatus) {
         this.signupStatus = SignupStatus.valueOf(signupStatus);
     }
@@ -114,5 +116,10 @@ public class User extends BaseTimeEntity {
 
     public void updateName(String name) {
         this.name = name;
+    }
+
+    public void updateFile(String imgPath, String imgUrl) {
+        this.imgPath = imgPath;
+        this.imgUrl = imgUrl;
     }
 }
