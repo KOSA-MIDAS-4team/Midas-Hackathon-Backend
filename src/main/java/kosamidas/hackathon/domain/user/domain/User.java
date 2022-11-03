@@ -2,6 +2,8 @@ package kosamidas.hackathon.domain.user.domain;
 
 import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
+import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
+import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -51,12 +53,22 @@ public class User extends BaseTimeEntity {
     @NotNull
     @Column(length = 16)
     @Enumerated(STRING)
-    private Department department;
+    private Department department; // 부서
 
     @NotNull
     @Column(length = 8)
     @Enumerated(STRING)
-    private Authority authority;
+    private Authority authority; // 권한
+
+    @NotNull
+    @Column(length = 8)
+    @Enumerated(STRING)
+    private SignupStatus signupStatus; // 회원가입 상태(대기, 수락, 거절)
+
+    @NotNull
+    @Column(length = 8)
+    @Enumerated(STRING)
+    private HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
 
     // 출근날짜
     private LocalDate officeWentDate;
@@ -68,12 +80,17 @@ public class User extends BaseTimeEntity {
     private LocalDateTime quitedTime;
 
     @Builder
-    public User(String authId, String password, String name, Department department, Authority authority) {
+    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus, HomeStatus homeStatus, LocalDate officeWentDate, LocalDateTime officeWentAt, LocalDateTime quitedTime) {
         this.authId = authId;
         this.password = password;
         this.name = name;
         this.department = department;
         this.authority = authority;
+        this.signupStatus = signupStatus;
+        this.homeStatus = homeStatus;
+        this.officeWentDate = officeWentDate;
+        this.officeWentAt = officeWentAt;
+        this.quitedTime = quitedTime;
     }
 
     // auth TODO : Validate 클래스로 분리하고 싶음

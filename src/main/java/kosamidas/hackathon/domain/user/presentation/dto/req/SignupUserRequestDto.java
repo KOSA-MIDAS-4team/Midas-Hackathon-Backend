@@ -3,6 +3,8 @@ package kosamidas.hackathon.domain.user.presentation.dto.req;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
+import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
+import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -45,7 +47,9 @@ public class SignupUserRequestDto {
                 .name(name)
                 .password(password)
                 .department(Department.valueOf(department))
-                .authority(kosamidas.hackathon.domain.user.domain.type.Authority.USER)
+                .authority(kosamidas.hackathon.domain.user.domain.type.Authority.NONE)
+                .signupStatus(SignupStatus.WAITING)
+                .homeStatus(HomeStatus.NONE)
                 .build();
     }
 

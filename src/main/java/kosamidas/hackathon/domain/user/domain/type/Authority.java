@@ -1,5 +1,5 @@
 package kosamidas.hackathon.domain.user.domain.type;
 
 public enum Authority {
-    USER, ADMIN;
+    NONE, USER, ADMIN;
 }

@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class UserFacade {
@@ -35,5 +37,9 @@ public class UserFacade {
     public User findUserByUserId(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 }

@@ -26,7 +26,6 @@ public class LoginService {
         return generateToken(user.getAuthId());
     }
 
-    @Transactional
     private TokenResponseDto generateToken(String authId) {
         String accessToken = jwtProvider.generateAccessToken(authId);
         String refreshToken = jwtProvider.generateRefreshToken(authId);

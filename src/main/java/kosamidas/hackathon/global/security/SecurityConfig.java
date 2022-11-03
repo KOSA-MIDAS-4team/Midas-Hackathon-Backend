@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers(POST, "/user").permitAll()
+                .antMatchers(POST, "/user").permitAll()
                 .antMatchers(GET, "/user").permitAll()
                 .antMatchers(GET, "/user/{userId}").permitAll()
                 .antMatchers(GET, "/user/nickname").permitAll()
