@@ -56,7 +56,7 @@ public class User extends BaseTimeEntity {
     private Department department; // 부서
 
     @NotNull
-    @Column(length = 8)
+    @Column(length = 16)
     @Enumerated(STRING)
     private Authority authority; // 권한
 

@@ -21,7 +21,7 @@ public class AdminController {
     @GetMapping
     public Result<List<UserResponseDto>> getUserBySignupStatusIsWaiting() {
         List<UserResponseDto> users = userService.getUserBySignupStatusIsWaiting();
-        return new Result<>(users, users.size());
+        return new Result<>(users.size(), users);
     }
 
     @PutMapping("/{authId}")
@@ -29,6 +29,6 @@ public class AdminController {
             @PathVariable String authId,
             @RequestParam("signupStatus") String signupStatus
     ) {
-        userService.updateUserSignupStatus(authId, signupStatus);
+        adminService.updateUserSignupStatus(authId, signupStatus);
     }
 }

@@ -13,8 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 
 @Configuration
 @EnableWebSecurity
@@ -46,6 +45,10 @@ public class SecurityConfig {
                 .antMatchers(GET, "/user/{userId}").permitAll()
                 .antMatchers(GET, "/user/nickname").permitAll()
                 .antMatchers(POST, "/auth/login").permitAll()
+                .antMatchers(GET, "/admin/**")
+                .access("hasRole('ROLE_ADMIN')")
+                .antMatchers(POST, "/admin/**")
+                .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()

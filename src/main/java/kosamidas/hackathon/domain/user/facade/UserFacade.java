@@ -29,6 +29,7 @@ public class UserFacade {
         return SecurityUtil.getCurrentUser().getUser();
     }
 
+    // authId를 인덱싱해서 authId를 pk 마냥 사용할 수 있음
     public User getUserByAuthId(String authId) {
         return userRepository.findByAuthId(authId)
                 .orElseThrow(() -> UserNotFoundException.EXCEPTION);

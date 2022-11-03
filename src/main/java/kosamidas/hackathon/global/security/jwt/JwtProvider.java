@@ -30,13 +30,15 @@ public class JwtProvider {
     private final RefreshTokenRepository refreshTokenRepository;
 
     private String generateToken(String id, String type, Long exp) {
-        return Jwts.builder()
+        String jwt = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .setSubject(id)
                 .claim("type", type)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + exp * 1000))
                 .compact();
+
+        return jwtProperties.getPrefix() + " " + jwt;
     }
 
     public String generateAccessToken(String id) {

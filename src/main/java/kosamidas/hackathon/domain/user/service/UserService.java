@@ -36,17 +36,4 @@ public class UserService {
                 .map(UserResponseDto::new)
                 .collect(Collectors.toList());
     }
-
-    @Transactional
-    public void updateUserSignupStatus(String authId, String signupStatus) {
-        User user = userFacade.getUserByAuthId(authId);
-        user.updateSignupStatus(signupStatus);
-        if (isSignupStatusAccept(signupStatus)) {
-            user.updateAuthority("USER");
-        }
-    }
-
-    private boolean isSignupStatusAccept(String signupStatus) {
-        return signupStatus.equals("ACCEPT");
-    }
 }
