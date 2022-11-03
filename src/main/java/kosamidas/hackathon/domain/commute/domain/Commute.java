@@ -1,7 +1,7 @@
 package kosamidas.hackathon.domain.commute.domain;
 
 import kosamidas.hackathon.domain.user.domain.User;
-import kosamidas.hackathon.global.entity.BaseTimeEntity;
+import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,7 +20,7 @@ import static javax.persistence.FetchType.*;
 @DynamicUpdate
 @DynamicInsert
 @Entity
-public class Commute extends BaseTimeEntity {
+public class Commute {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,15 +34,21 @@ public class Commute extends BaseTimeEntity {
     // 퇴근시간
     private LocalDateTime quitedTime;
 
+    // 일을 하고 있는 상태인가/퇴근한 상태인가
+    @Enumerated(EnumType.STRING)
+    private WalkWhether walkWhether;
+
     @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Builder
-    public Commute(LocalDate officeWentDate, LocalDateTime officeWentAt, LocalDateTime quitedTime) {
+    public Commute(LocalDate officeWentDate, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user) {
         this.officeWentDate = officeWentDate;
         this.officeWentAt = officeWentAt;
         this.quitedTime = quitedTime;
+        this.walkWhether = walkWhether;
+        this.user = user;
     }
 
     // update
@@ -56,6 +62,14 @@ public class Commute extends BaseTimeEntity {
 
     public void updateQuitedTime(LocalDateTime quitedTime) {
         this.quitedTime = quitedTime;
+    }
+
+    public void updateWalkingWhether() {
+        this.walkWhether = WalkWhether.WALKING;
+    }
+
+    public void updateQuitedWhether() {
+        this.walkWhether = WalkWhether.QUITED;
     }
 
     // 연관관계 편의 메서드

@@ -21,26 +21,29 @@ public class CommuteService {
 
     @Transactional
     public void startOfficeGo() {
-        User user = userFacade.getCurrentUser();
-        Commute commute = Commute.builder()
-                .officeWentDate(LocalDate.now())
-                .officeWentAt(LocalDateTime.now())
-                .build();
-        commute.confirmUser(user);
-        commuteFacade.save(commute);
+        if (!isAlreadyExistsCommuteToday()) {
+            User user = userFacade.getCurrentUser();
+            Commute commute = Commute.builder()
+                    .officeWentDate(LocalDate.now())
+                    .officeWentAt(LocalDateTime.now())
+                    .build();
+            commute.confirmUser(user);
+            commute.updateWalkingWhether();
+            commuteFacade.save(commute);
+        }
     }
 
-//    private boolean isAlreadyExistsCommuteToday() {
-//        commuteFacade.findAll()
-//                .forEach(commute -> {
-//                    commute.getOfficeWentDate().equals(LocalDate.now());
-//                });
-//    }
+    private boolean isAlreadyExistsCommuteToday() {
+        return commuteFacade.findAll()
+                .stream()
+                .anyMatch(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
+    }
 
     @Transactional
     public void doQuitedTime() {
         Long userId = userFacade.getCurrentUser().getId();
         Commute commute = commuteFacade.getCommuteByUserId(userId);
         commute.updateQuitedTime(LocalDateTime.now());
+        commute.updateQuitedWhether();
     }
 }

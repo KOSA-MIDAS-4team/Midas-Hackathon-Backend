@@ -1,5 +1,9 @@
 package kosamidas.hackathon.domain.user.service;
 
+import kosamidas.hackathon.domain.commute.domain.Commute;
+import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
+import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
+import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
@@ -9,6 +13,8 @@ import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +23,7 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserFacade userFacade;
+    private final CommuteFacade commuteFacade;
 
     @Transactional
     public void createUser(SignupUserRequestDto req) {
@@ -36,4 +43,19 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserResponseDto> getUserByWalking() {
+        // 오늘 일 하고있는 유저의 출퇴근 테이블
+        List<Commute> commutes = commuteFacade.findAll()
+                .stream()
+                .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))
+                .filter(commute -> commute.getWalkWhether().equals(WalkWhether.WALKING))
+                .collect(Collectors.toList());
+
+        List<User> users = new ArrayList<>();
+        commutes.forEach(commute -> users.add(commute.getUser()));
+
+        return users.stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toList());
+    }
 }
