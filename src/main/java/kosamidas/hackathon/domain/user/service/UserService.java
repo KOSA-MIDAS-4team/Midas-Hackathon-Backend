@@ -36,7 +36,13 @@ public class UserService {
     @Transactional
     public void createUser(SignupUserRequestDto req) {
         CreateUserVerifier.checkMatchedPassword(req.getPassword(), req.getCheckPassword());
-        userFacade.saveAndEncodePassword(req.toEntity());
+        System.out.println("req.getPassword() = " + req.getPassword());
+        System.out.println("req.getCheckPassword() = " + req.getCheckPassword());
+        System.out.println("req.getName() = " + req.getName());
+        System.out.println("req.getAuthId() = " + req.getAuthId());
+        System.out.println("req.getDepartment() = " + req.getDepartment());
+        userFacade.save(req.toEntity());
+        System.out.println("asdfasdf");
     }
 
     public UserResponseDto getCurrentUser() {

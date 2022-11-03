@@ -24,6 +24,7 @@ public class UserController {
 
     @PostMapping
     public void signupUser(@RequestBody SignupUserRequestDto req) {
+        System.out.println("실행");
         userService.createUser(req);
     }
 

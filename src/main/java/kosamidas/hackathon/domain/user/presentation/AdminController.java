@@ -47,12 +47,4 @@ public class AdminController {
         userService.updateUserInfo(authId, req);
     }
 
-    @PutMapping("/core")
-    public void updateCoreTime(
-            @RequestParam("authId") String authId,
-            @RequestParam("start") LocalTime startedCoreAt,
-            @RequestParam("end") LocalTime endedCoreAt
-            ) {
-        adminService.updateCoreTime(authId, startedCoreAt, endedCoreAt);
-    }
 }

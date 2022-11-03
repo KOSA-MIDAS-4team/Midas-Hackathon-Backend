@@ -78,14 +78,10 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = ALL)
     private final List<Commute> commutes = new ArrayList<>();
 
-    @NotNull
-    private LocalTime startedCoreAt;
-
-    @NotNull
-    private LocalTime endedCoreAt;
-
     @Builder
-    public User(String authId, String password, String name, String imgPath, String imgUrl, Department department, Authority authority, SignupStatus signupStatus) {
+    public User(String authId, String password, String name, String imgPath,
+                String imgUrl, Department department, Authority authority,
+                SignupStatus signupStatus) {
         this.authId = authId;
         this.password = password;
         this.name = name;
@@ -96,7 +92,6 @@ public class User extends BaseTimeEntity {
         this.signupStatus = signupStatus;
     }
 
-    // auth TODO : Validate 클래스로 분리하고 싶음
     public void encodePassword(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(password);
     }
@@ -125,8 +120,4 @@ public class User extends BaseTimeEntity {
         this.imgUrl = imgUrl;
     }
 
-    public void updateCoreTime(LocalTime startedCoreAt, LocalTime endedCoreAt) {
-        this.startedCoreAt = startedCoreAt;
-        this.endedCoreAt = endedCoreAt;
-    }
 }

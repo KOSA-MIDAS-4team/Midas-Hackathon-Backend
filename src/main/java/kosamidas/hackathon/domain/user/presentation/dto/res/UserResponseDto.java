@@ -19,9 +19,6 @@ public class UserResponseDto {
     private final Authority authority; // 권한
     private final SignupStatus signupStatus; // 회원가입 상태(대기, 수락, 거절)
     private final String imgUrl;
-    private final LocalTime startedCoreAt;
-    private final LocalTime endedCoreAt;
-
     public UserResponseDto(User user) {
         this.id = user.getId();
         this.authId = user.getAuthId();
@@ -30,7 +27,5 @@ public class UserResponseDto {
         this.authority = user.getAuthority();
         this.signupStatus = user.getSignupStatus();
         this.imgUrl = user.getImgUrl();
-        this.startedCoreAt = user.getStartedCoreAt();
-        this.endedCoreAt = user.getEndedCoreAt();
     }
 }
