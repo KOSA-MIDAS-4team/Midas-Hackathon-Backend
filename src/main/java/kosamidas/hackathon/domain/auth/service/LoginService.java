@@ -22,7 +22,6 @@ public class LoginService {
     public TokenResponseDto login(LoginRequestDto loginReq) {
         User user = userFacade.getUserByAuthId(loginReq.getAuthId());
         user.matchedPassword(passwordEncoder, user, loginReq.getPassword());
-
         return generateToken(user.getAuthId());
     }
 

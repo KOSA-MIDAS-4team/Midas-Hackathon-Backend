@@ -48,6 +48,7 @@ public class CommuteService {
         Optional<Commute> commuteOptional = commuteFacade.findAll()
                 .stream()
                 .findFirst()
+                .filter(commute -> commute.getUser().getId().equals(userFacade.getCurrentUser().getId()))
                 .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
 
         if (commuteOptional.isPresent()) {
@@ -61,6 +62,7 @@ public class CommuteService {
     private boolean isAlreadyExistsCommuteToday() {
         return commuteFacade.findAll()
                 .stream()
+                .filter(commute -> commute.getUser().getId().equals(userFacade.getCurrentUser().getId()))
                 .anyMatch(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
     }
 
