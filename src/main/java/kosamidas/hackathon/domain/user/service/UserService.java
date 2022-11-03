@@ -16,6 +16,8 @@ import kosamidas.hackathon.global.generic.Result;
 import kosamidas.hackathon.infrastructure.file.FileResponseDto;
 import kosamidas.hackathon.infrastructure.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,21 +37,17 @@ public class UserService {
     private final S3Uploader s3Uploader;
 
     @Transactional
+    @Cacheable(value = "User", cacheManager = "cacheManager")
     public void createUser(SignupUserRequestDto req) {
         CreateUserVerifier.checkMatchedPassword(req.getPassword(), req.getCheckPassword());
-        System.out.println("req.getPassword() = " + req.getPassword());
-        System.out.println("req.getCheckPassword() = " + req.getCheckPassword());
-        System.out.println("req.getName() = " + req.getName());
-        System.out.println("req.getAuthId() = " + req.getAuthId());
-        System.out.println("req.getDepartment() = " + req.getDepartment());
-        userFacade.save(req.toEntity());
-        System.out.println("asdfasdf");
+        userFacade.saveAndEncodePassword(req.toEntity());
     }
 
     public UserResponseDto getCurrentUser() {
         return new UserResponseDto(userFacade.getCurrentUser());
     }
 
+    @Cacheable(value = "User", key = "#authId", cacheManager = "cacheManager")
     public UserResponseDto getUserByAuthId(String authId) {
         return new UserResponseDto(userFacade.getUserByAuthId(authId));
     }
@@ -62,12 +60,12 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public List<UserResponseDto> getUserByWalking() {
+    public List<UserResponseDto> getUserByWorking() {
         // 오늘 일 하고있는 유저의 출퇴근 테이블
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()
                 .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))
-                .filter(commute -> commute.getWalkWhether().equals(WalkWhether.WALKING))
+                .filter(commute -> commute.getWalkWhether().equals(WalkWhether.WORKING))
                 .collect(Collectors.toList());
 
         List<User> users = new ArrayList<>();
@@ -79,6 +77,7 @@ public class UserService {
     }
 
     @Transactional
+    @CachePut(value = "User", cacheManager = "cacheManager")
     public void updateUserInfo(String authId, UpdateUserRequestDto req) {
         User user = userFacade.getUserByAuthId(authId);
         if (req.getAuthority() != null) {
@@ -103,6 +102,7 @@ public class UserService {
     }
 
     @Transactional
+    @CachePut(value = "User", cacheManager = "cacheManager")
     public void updateImg(MultipartFile multipartFile) throws IOException {
         User user = userFacade.getCurrentUser();
         FileResponseDto fileResponseDto = s3Uploader.saveFile(multipartFile);

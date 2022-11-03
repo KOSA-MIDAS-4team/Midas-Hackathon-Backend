@@ -55,9 +55,11 @@ public class User extends BaseTimeEntity {
     private String name;
 
     @Size(max = 256)
+    @Column
     private String imgPath;
 
     @Size(max = 512)
+    @Column
     private String imgUrl;
 
     @NotNull

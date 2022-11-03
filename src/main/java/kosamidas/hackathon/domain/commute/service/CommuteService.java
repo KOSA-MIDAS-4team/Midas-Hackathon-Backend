@@ -12,6 +12,7 @@ import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class CommuteService {
     private final CommuteFacade commuteFacade;
 
     @Transactional
+    @Cacheable(value = "Commute", cacheManager = "cacheManager")
     public StartedAtResponseDto startOfficeGo(String where) {
         isAlreadyQuited();
         if (!isAlreadyExistsCommuteToday()) {
@@ -42,7 +44,7 @@ public class CommuteService {
                     .wheres(Where.valueOf(where))
                     .build();
             commute.confirmUser(user);
-            commute.updateWalkingWhether();
+            commute.updateWorkingWhether();
             commuteFacade.save(commute);
             return new StartedAtResponseDto(LocalDateTime.now());
         }
@@ -99,6 +101,7 @@ public class CommuteService {
         return null;
     }
 
+    @Cacheable(value = "Commute", cacheManager = "cacheManager")
     public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek() {
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()

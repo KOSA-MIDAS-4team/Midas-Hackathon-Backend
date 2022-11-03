@@ -36,4 +36,8 @@ public class SignupUserRequestDto {
                 .build();
     }
 
+    @Override
+    public String toString() {
+        return "caching";
+    }
 }

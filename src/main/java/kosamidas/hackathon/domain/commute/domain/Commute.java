@@ -84,8 +84,8 @@ public class Commute {
         this.quitedTime = quitedTime;
     }
 
-    public void updateWalkingWhether() {
-        this.walkWhether = WalkWhether.WALKING;
+    public void updateWorkingWhether() {
+        this.walkWhether = WalkWhether.WORKING;
     }
 
     public void updateQuitedWhether() {

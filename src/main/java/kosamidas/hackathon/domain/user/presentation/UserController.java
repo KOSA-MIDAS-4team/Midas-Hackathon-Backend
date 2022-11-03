@@ -26,7 +26,6 @@ public class UserController {
 
     @PostMapping
     public void signupUser(@RequestBody SignupUserRequestDto req) {
-        System.out.println("실행");
         userService.createUser(req);
     }
 
@@ -52,8 +51,8 @@ public class UserController {
     }
 
     @GetMapping("/list") // 출근 중인 사람 리스트
-    public Result<List<UserResponseDto>> getUserByWalking() {
-        List<UserResponseDto> users = userService.getUserByWalking();
+    public Result<List<UserResponseDto>> getUserByWorking() {
+        List<UserResponseDto> users = userService.getUserByWorking();
         return new Result<>(users.size(), users);
     }
 
