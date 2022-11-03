@@ -4,17 +4,17 @@ import kosamidas.hackathon.domain.commute.domain.Commute;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
+import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @ServiceWithTransactionReadOnly
 @RequiredArgsConstructor
@@ -44,9 +44,11 @@ public class CommuteService {
                 .findFirst()
                 .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
 
-        boolean isAlreadyQuited = commuteOptional.get().getWalkWhether().equals(WalkWhether.QUITED);
-        if (isAlreadyQuited) {
-            throw UserAlreadyQuited.EXCEPTION;
+        if (commuteOptional.isPresent()) {
+            boolean isAlreadyQuited = commuteOptional.get().getWalkWhether().equals(WalkWhether.QUITED);
+            if (isAlreadyQuited) {
+                throw UserAlreadyQuited.EXCEPTION;
+            }
         }
     }
 
@@ -57,10 +59,12 @@ public class CommuteService {
     }
 
     @Transactional
-    public void doQuitedTime() {
+    public OnEightHourBasisResponseDto doQuitedTime() {
         Long userId = userFacade.getCurrentUser().getId();
         Commute commute = commuteFacade.getCommuteByUserId(userId);
         commute.updateQuitedTime(LocalDateTime.now());
         commute.updateQuitedWhether();
+        long between = ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
+        return new OnEightHourBasisResponseDto(480 - between);
     }
 }

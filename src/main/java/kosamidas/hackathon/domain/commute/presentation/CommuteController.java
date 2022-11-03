@@ -1,5 +1,6 @@
 package kosamidas.hackathon.domain.commute.presentation;
 
+import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
 import kosamidas.hackathon.domain.commute.service.CommuteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +21,7 @@ public class CommuteController {
     }
 
     @PutMapping
-    public void doQuitedTime() {
-        commuteService.doQuitedTime();
+    public OnEightHourBasisResponseDto doQuitedTime() {
+        return commuteService.doQuitedTime();
     }
 }
