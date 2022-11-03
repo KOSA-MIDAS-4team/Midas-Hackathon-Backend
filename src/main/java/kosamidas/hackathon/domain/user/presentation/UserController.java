@@ -1,13 +1,11 @@
 package kosamidas.hackathon.domain.user.presentation;
 
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
+import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RequiredArgsConstructor
@@ -20,5 +18,10 @@ public class UserController {
     @PostMapping
     public void signupUser(@RequestBody SignupUserRequestDto req) {
         userService.createUser(req);
+    }
+
+    @GetMapping("/{authId}")
+    public UserResponseDto getUser(@PathVariable String authId) {
+        return userService.getUserByAuthId(authId);
     }
 }

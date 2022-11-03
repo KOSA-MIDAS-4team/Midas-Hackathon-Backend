@@ -3,11 +3,10 @@ package kosamidas.hackathon.domain.user.presentation;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.AdminService;
+import kosamidas.hackathon.domain.user.service.UserService;
 import kosamidas.hackathon.global.generic.Result;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,11 +15,20 @@ import java.util.List;
 @RestController
 public class AdminController {
 
+    private final UserService userService;
     private final AdminService adminService;
 
-    @PutMapping
-    public Result<List<UserResponseDto>> updateUserSignupStatus() {
-        List<UserResponseDto> users = adminService.getUserBySignupStatusIsWaiting();
+    @GetMapping
+    public Result<List<UserResponseDto>> getUserBySignupStatusIsWaiting() {
+        List<UserResponseDto> users = userService.getUserBySignupStatusIsWaiting();
         return new Result<>(users, users.size());
+    }
+
+    @PutMapping("/{authId}")
+    public void updateUserSignupStatus(
+            @PathVariable String authId,
+            @RequestParam("signupStatus") String signupStatus
+    ) {
+        userService.updateUserSignupStatus(authId, signupStatus);
     }
 }

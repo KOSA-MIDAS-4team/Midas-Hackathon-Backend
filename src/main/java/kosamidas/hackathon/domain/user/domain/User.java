@@ -121,4 +121,12 @@ public class User extends BaseTimeEntity {
     public void updateQuitedTime(LocalDateTime quitedTime) {
         this.quitedTime = quitedTime;
     }
+
+    public void updateSignupStatus(String signupStatus) {
+        this.signupStatus = SignupStatus.valueOf(signupStatus);
+    }
+
+    public void updateAuthority(String authority) {
+        this.authority = Authority.valueOf(authority);
+    }
 }
