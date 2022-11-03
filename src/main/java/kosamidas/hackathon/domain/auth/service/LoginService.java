@@ -3,7 +3,7 @@ package kosamidas.hackathon.domain.auth.service;
 import kosamidas.hackathon.domain.auth.presentation.dto.req.LoginRequestDto;
 import kosamidas.hackathon.domain.auth.presentation.dto.res.TokenResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
-import kosamidas.hackathon.domain.user.domain.facade.UserFacade;
+import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ public class LoginService {
 
     @Transactional
     public TokenResponseDto login(LoginRequestDto loginReq) {
-        User user = userFacade.getUserByAuthId(loginReq.getEmail());
+        User user = userFacade.getUserByAuthId(loginReq.getAuthId());
         user.matchedPassword(passwordEncoder, user, loginReq.getPassword());
 
         return generateToken(user.getAuthId());

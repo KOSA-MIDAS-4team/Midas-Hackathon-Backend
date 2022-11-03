@@ -1,4 +1,4 @@
-package kosamidas.hackathon.domain.user.domain.exception;
+package kosamidas.hackathon.domain.user.exception;
 
 import kosamidas.hackathon.global.security.error.exception.ErrorCode;
 import kosamidas.hackathon.global.security.error.exception.MidasException;

@@ -1,9 +1,9 @@
-package kosamidas.hackathon.domain.user.domain.facade;
+package kosamidas.hackathon.domain.user.facade;
 
 import kosamidas.hackathon.domain.user.domain.User;
-import kosamidas.hackathon.domain.user.domain.exception.UserNotFoundException;
+import kosamidas.hackathon.domain.user.exception.UserNotFoundException;
 import kosamidas.hackathon.domain.user.domain.repository.UserRepository;
-import kosamidas.hackathon.domain.user.domain.verifier.CreateUserVerifier;
+import kosamidas.hackathon.domain.user.verifier.CreateUserVerifier;
 import kosamidas.hackathon.global.security.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,10 +17,10 @@ public class UserFacade {
     private final UserRepository userRepository;
     private final CreateUserVerifier createUserVerifier;
 
-    public User createUser(User user) {
+    public void save(User user) {
         createUserVerifier.alreadyExistsUserVerifier(user);
         user.encodePassword(passwordEncoder);
-        return userRepository.save(user);
+        userRepository.save(user);
     }
 
     public User getCurrentUser() {

@@ -9,10 +9,10 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 public class LoginRequestDto {
 
-    @NotBlank(message = "email은 Null, 공백, 띄어쓰기를 허용하지 않습니다.")
-    private String email;
+    @NotBlank(message = "아이디는 Null, 공백, 띄어쓰기를 허용하지 않습니다.")
+    private String authId;
 
-    @NotBlank(message = "password는 Null, 공백, 띄어쓰기를 허용하지 않습니다.")
+    @NotBlank(message = "비밀번호는 Null, 공백, 띄어쓰기를 허용하지 않습니다.")
     private String password;
 
 }
