@@ -6,6 +6,7 @@ import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserCommuteDateResponseDto;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.UserService;
+import kosamidas.hackathon.global.generic.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -41,6 +43,12 @@ public class UserController {
     @GetMapping("/remain")
     public RemainingMinutesOfWorkResponseDto getMinutes() {
         return commuteService.getRemainingHoursOfWorkThisWeek();
+    }
+
+    @GetMapping("/all")
+    public Result<List<UserResponseDto>> getAllUsers() {
+        List<UserResponseDto> users = userService.getAllUsers();
+        return new Result<>(users.size(), users);
     }
 
     @GetMapping("/date")

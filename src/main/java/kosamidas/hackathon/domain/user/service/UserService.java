@@ -12,6 +12,7 @@ import kosamidas.hackathon.domain.user.presentation.dto.res.UserCommuteDateRespo
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.verifier.CreateUserVerifier;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
+import kosamidas.hackathon.global.generic.Result;
 import kosamidas.hackathon.infrastructure.file.FileResponseDto;
 import kosamidas.hackathon.infrastructure.file.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -107,5 +108,12 @@ public class UserService {
         FileResponseDto fileResponseDto = s3Uploader.saveFile(multipartFile);
         user.updateFile(fileResponseDto.getImgPath(), fileResponseDto.getImgUrl());
         userFacade.save(user);
+    }
+
+    public List<UserResponseDto> getAllUsers() {
+        return userFacade.getAllUsers()
+                .stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toList());
     }
 }
