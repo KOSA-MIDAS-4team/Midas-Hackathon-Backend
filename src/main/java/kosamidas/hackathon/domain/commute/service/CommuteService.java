@@ -79,10 +79,10 @@ public class CommuteService {
         return new OnEightHourBasisResponseDto(480 - between);
     }
 
-    public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek(String authId) {
+    public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek() {
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()
-                .filter(commute -> commute.getUser().getAuthId().equals(authId))
+                .filter(commute -> commute.getUser().getAuthId().equals(userFacade.getCurrentUser().getAuthId()))
                 .filter(commute -> commute.getWeek() == getWeek())
                 .collect(Collectors.toList());
 

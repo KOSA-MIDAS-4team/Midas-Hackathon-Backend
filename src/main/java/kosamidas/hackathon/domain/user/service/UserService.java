@@ -34,6 +34,10 @@ public class UserService {
         userFacade.save(req.toEntity());
     }
 
+    public UserResponseDto getCurrentUser() {
+        return new UserResponseDto(userFacade.getCurrentUser());
+    }
+
     public UserResponseDto getUserByAuthId(String authId) {
         return new UserResponseDto(userFacade.getUserByAuthId(authId));
     }

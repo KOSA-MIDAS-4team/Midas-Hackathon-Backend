@@ -27,16 +27,19 @@ public class UserController {
         userService.createUser(req);
     }
 
+    @GetMapping
+    public UserResponseDto getMyInfo() {
+        return userService.getCurrentUser();
+    }
+
     @GetMapping("/{authId}")
     public UserResponseDto getUser(@PathVariable String authId) {
         return userService.getUserByAuthId(authId);
     }
 
     @GetMapping("/remain")
-    public RemainingMinutesOfWorkResponseDto getMinutes(
-            @RequestParam("authId") String authId
-    ) {
-        return commuteService.getRemainingHoursOfWorkThisWeek(authId);
+    public RemainingMinutesOfWorkResponseDto getMinutes() {
+        return commuteService.getRemainingHoursOfWorkThisWeek();
     }
 
     @GetMapping("/date")
