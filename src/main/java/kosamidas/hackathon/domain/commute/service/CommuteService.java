@@ -5,6 +5,7 @@ import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
+import kosamidas.hackathon.domain.commute.presentation.dto.res.RemainingMinutesOfWorkResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
@@ -14,7 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @ServiceWithTransactionReadOnly
 @RequiredArgsConstructor
@@ -66,5 +71,23 @@ public class CommuteService {
         commute.updateQuitedWhether();
         long between = ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
         return new OnEightHourBasisResponseDto(480 - between);
+    }
+
+    // 이번주에 남은 근무시간
+    public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek(String authId) {
+        // 1. 근무 시간을 모두 구함
+        List<Commute> commutes = commuteFacade.findAll()
+                .stream()
+                .filter(commute -> commute.getUser().getAuthId().equals(authId))
+                .collect(Collectors.toList());
+
+        // 2. 근무 시간을 모두 더함
+        long result = 0;
+        for (Commute commute : commutes) {
+            result += ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
+        }
+
+        // 3. 40 - 2번
+        return new RemainingMinutesOfWorkResponseDto(2400 - result);
     }
 }

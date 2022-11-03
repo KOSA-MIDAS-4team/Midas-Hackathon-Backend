@@ -1,5 +1,7 @@
 package kosamidas.hackathon.domain.user.presentation;
 
+import kosamidas.hackathon.domain.commute.presentation.dto.res.RemainingMinutesOfWorkResponseDto;
+import kosamidas.hackathon.domain.commute.service.CommuteService;
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.UserService;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final CommuteService commuteService;
 
     @PostMapping
     public void signupUser(@RequestBody SignupUserRequestDto req) {
@@ -23,5 +26,12 @@ public class UserController {
     @GetMapping("/{authId}")
     public UserResponseDto getUser(@PathVariable String authId) {
         return userService.getUserByAuthId(authId);
+    }
+
+    @GetMapping("/remain")
+    public RemainingMinutesOfWorkResponseDto getMinutes(
+            @RequestParam("authId") String authId
+    ) {
+        return commuteService.getRemainingHoursOfWorkThisWeek(authId);
     }
 }
