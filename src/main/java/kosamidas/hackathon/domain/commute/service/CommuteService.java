@@ -1,6 +1,8 @@
 package kosamidas.hackathon.domain.commute.service;
 
 import kosamidas.hackathon.domain.commute.domain.Commute;
+import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
+import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
@@ -11,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ServiceWithTransactionReadOnly
 @RequiredArgsConstructor
@@ -21,6 +25,7 @@ public class CommuteService {
 
     @Transactional
     public void startOfficeGo() {
+        isAlreadyQuited();
         if (!isAlreadyExistsCommuteToday()) {
             User user = userFacade.getCurrentUser();
             Commute commute = Commute.builder()
@@ -30,6 +35,18 @@ public class CommuteService {
             commute.confirmUser(user);
             commute.updateWalkingWhether();
             commuteFacade.save(commute);
+        }
+    }
+
+    private void isAlreadyQuited() {
+        Optional<Commute> commuteOptional = commuteFacade.findAll()
+                .stream()
+                .findFirst()
+                .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
+
+        boolean isAlreadyQuited = commuteOptional.get().getWalkWhether().equals(WalkWhether.QUITED);
+        if (isAlreadyQuited) {
+            throw UserAlreadyQuited.EXCEPTION;
         }
     }
 

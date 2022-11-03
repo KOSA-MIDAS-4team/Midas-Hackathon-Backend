@@ -1,16 +1,13 @@
 package kosamidas.hackathon.domain.user.presentation.dto.req;
 
 import kosamidas.hackathon.domain.user.domain.User;
-import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
 import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import lombok.Builder;
 import lombok.Getter;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 
 @Getter
 public class SignupUserRequestDto {
