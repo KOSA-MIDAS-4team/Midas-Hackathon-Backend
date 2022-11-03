@@ -4,14 +4,13 @@ import kosamidas.hackathon.domain.auth.presentation.dto.req.LoginRequestDto;
 import kosamidas.hackathon.domain.auth.presentation.dto.res.TokenResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
+import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import kosamidas.hackathon.global.security.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
-@Transactional(readOnly = true)
+@ServiceWithTransactionReadOnly
 @RequiredArgsConstructor
 public class LoginService {
 
@@ -27,6 +26,7 @@ public class LoginService {
         return generateToken(user.getAuthId());
     }
 
+    @Transactional
     private TokenResponseDto generateToken(String authId) {
         String accessToken = jwtProvider.generateAccessToken(authId);
         String refreshToken = jwtProvider.generateRefreshToken(authId);
