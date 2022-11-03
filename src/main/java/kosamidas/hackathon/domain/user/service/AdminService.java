@@ -6,6 +6,8 @@ import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
+
 @ServiceWithTransactionReadOnly
 @RequiredArgsConstructor
 public class AdminService {
@@ -23,5 +25,10 @@ public class AdminService {
 
     private boolean isSignupStatusAccept(String signupStatus) {
         return signupStatus.equals("ACCEPT");
+    }
+
+    public void updateCoreTime(String authId, LocalTime startedCoreAt, LocalTime endedCoreAt) {
+        User user = userFacade.getUserByAuthId(authId);
+        user.updateCoreTime(startedCoreAt, endedCoreAt);
     }
 }

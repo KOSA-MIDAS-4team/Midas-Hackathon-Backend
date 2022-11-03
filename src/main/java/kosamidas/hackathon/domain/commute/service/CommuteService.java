@@ -1,7 +1,7 @@
 package kosamidas.hackathon.domain.commute.service;
 
 import kosamidas.hackathon.domain.commute.domain.Commute;
-import kosamidas.hackathon.domain.commute.domain.type.WHERE;
+import kosamidas.hackathon.domain.commute.domain.type.Where;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
@@ -38,7 +38,7 @@ public class CommuteService {
                     .officeWentAt(LocalDateTime.now())
                     .quitedTime(LocalDateTime.now())
                     .week(getWeek())
-                    .where(WHERE.valueOf(where))
+                    .wheres(Where.valueOf(where))
                     .build();
             commute.confirmUser(user);
             commute.updateWalkingWhether();
@@ -47,7 +47,6 @@ public class CommuteService {
     }
 
     private void isAlreadyQuited() {
-        System.out.println("LocalDate.now() = " + LocalDate.now());
         Optional<Commute> commuteOptional = commuteFacade.findAll()
                 .stream()
                 .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))

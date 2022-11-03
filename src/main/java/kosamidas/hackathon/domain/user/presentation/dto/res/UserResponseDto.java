@@ -7,6 +7,8 @@ import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import lombok.Getter;
 
+import java.time.LocalTime;
+
 @Getter
 public class UserResponseDto {
 
@@ -17,6 +19,8 @@ public class UserResponseDto {
     private final Authority authority; // 권한
     private final SignupStatus signupStatus; // 회원가입 상태(대기, 수락, 거절)
     private final String imgUrl;
+    private final LocalTime startedCoreAt;
+    private final LocalTime endedCoreAt;
 
     public UserResponseDto(User user) {
         this.id = user.getId();
@@ -26,5 +30,7 @@ public class UserResponseDto {
         this.authority = user.getAuthority();
         this.signupStatus = user.getSignupStatus();
         this.imgUrl = user.getImgUrl();
+        this.startedCoreAt = user.getStartedCoreAt();
+        this.endedCoreAt = user.getEndedCoreAt();
     }
 }

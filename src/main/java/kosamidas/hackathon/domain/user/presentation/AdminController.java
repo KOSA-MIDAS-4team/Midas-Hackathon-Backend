@@ -8,6 +8,7 @@ import kosamidas.hackathon.global.generic.Result;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -44,5 +45,14 @@ public class AdminController {
             @RequestBody UpdateUserRequestDto req
     ) {
         userService.updateUserInfo(authId, req);
+    }
+
+    @PutMapping("/core")
+    public void updateCoreTime(
+            @RequestParam("authId") String authId,
+            @RequestParam("start") LocalTime startedCoreAt,
+            @RequestParam("end") LocalTime endedCoreAt
+            ) {
+        adminService.updateCoreTime(authId, startedCoreAt, endedCoreAt);
     }
 }

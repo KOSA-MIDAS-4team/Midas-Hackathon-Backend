@@ -4,6 +4,7 @@ import kosamidas.hackathon.domain.commute.domain.Commute;
 import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
+import kosamidas.hackathon.domain.user.exception.NotMatchedPassword;
 import kosamidas.hackathon.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +78,12 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = ALL)
     private final List<Commute> commutes = new ArrayList<>();
 
+    @NotNull
+    private LocalTime startedCoreAt;
+
+    @NotNull
+    private LocalTime endedCoreAt;
+
     @Builder
     public User(String authId, String password, String name, String imgPath, String imgUrl, Department department, Authority authority, SignupStatus signupStatus) {
         this.authId = authId;
@@ -93,18 +101,13 @@ public class User extends BaseTimeEntity {
         this.password = passwordEncoder.encode(password);
     }
 
-    // 나중에 GlobalException 처리 해줘야 함
     public void matchedPassword(PasswordEncoder passwordEncoder, User user, String password) {
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw NotMatchedPassword.EXCEPTION;
         }
     }
 
     // update
-    public void updatePassword(String password) {
-        this.password = password;
-    }
-
     public void updateSignupStatus(String signupStatus) {
         this.signupStatus = SignupStatus.valueOf(signupStatus);
     }
@@ -120,5 +123,10 @@ public class User extends BaseTimeEntity {
     public void updateFile(String imgPath, String imgUrl) {
         this.imgPath = imgPath;
         this.imgUrl = imgUrl;
+    }
+
+    public void updateCoreTime(LocalTime startedCoreAt, LocalTime endedCoreAt) {
+        this.startedCoreAt = startedCoreAt;
+        this.endedCoreAt = endedCoreAt;
     }
 }

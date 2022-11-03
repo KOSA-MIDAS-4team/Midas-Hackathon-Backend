@@ -51,6 +51,7 @@ public class UserController {
         return userService.getDateInfo(date);
     }
 
+    @CrossOrigin("*")
     @PutMapping("/update/img")
     public void uploadImg(@RequestParam("data") MultipartFile multipartFile) throws IOException {
         userService.updateImg(multipartFile);

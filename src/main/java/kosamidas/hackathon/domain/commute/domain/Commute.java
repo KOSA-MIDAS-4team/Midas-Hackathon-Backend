@@ -1,9 +1,8 @@
 package kosamidas.hackathon.domain.commute.domain;
 
-import kosamidas.hackathon.domain.commute.domain.type.WHERE;
+import kosamidas.hackathon.domain.commute.domain.type.Where;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
-import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.*;
@@ -58,17 +58,17 @@ public class Commute {
     @NotNull
     @Column(length = 12)
     @Enumerated(STRING)
-    private WHERE wheres; // 회사 또는 집
+    private Where wheres; // 회사 또는 집
 
     @Builder
-    public Commute(LocalDate officeWentDate, Integer week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user, WHERE where) {
+    public Commute(LocalDate officeWentDate, Integer week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user, Where wheres) {
         this.officeWentDate = officeWentDate;
         this.week = week;
         this.officeWentAt = officeWentAt;
         this.quitedTime = quitedTime;
         this.walkWhether = walkWhether;
         this.user = user;
-        this.wheres = where;
+        this.wheres = wheres;
     }
 
     // update
@@ -90,10 +90,6 @@ public class Commute {
 
     public void updateQuitedWhether() {
         this.walkWhether = WalkWhether.QUITED;
-    }
-
-    public void updateWeek(int week) {
-        this.week = week;
     }
 
     // 연관관계 편의 메서드
