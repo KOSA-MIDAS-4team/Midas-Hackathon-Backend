@@ -7,6 +7,7 @@ import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.RemainingMinutesOfWorkResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
+import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,7 @@ public class CommuteService {
                     .officeWentAt(LocalDateTime.now())
                     .quitedTime(LocalDateTime.now())
                     .week(getWeek())
+                    .homeStatus(HomeStatus.NONE)
                     .build();
             commute.confirmUser(user);
             commute.updateWalkingWhether();

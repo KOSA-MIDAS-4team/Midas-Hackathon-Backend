@@ -67,23 +67,17 @@ public class User extends BaseTimeEntity {
     @Enumerated(STRING)
     private SignupStatus signupStatus; // 회원가입 상태(대기, 수락, 거절)
 
-    @NotNull
-    @Column(length = 8)
-    @Enumerated(STRING)
-    private HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
-
     @OneToMany(mappedBy = "user", cascade = ALL)
     private final List<Commute> commutes = new ArrayList<>();
 
     @Builder
-    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus, HomeStatus homeStatus) {
+    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus) {
         this.authId = authId;
         this.password = password;
         this.name = name;
         this.department = department;
         this.authority = authority;
         this.signupStatus = signupStatus;
-        this.homeStatus = homeStatus;
     }
 
     // auth TODO : Validate 클래스로 분리하고 싶음

@@ -16,7 +16,6 @@ public class UserResponseDto {
     private final Department department; // 부서
     private final Authority authority; // 권한
     private final SignupStatus signupStatus; // 회원가입 상태(대기, 수락, 거절)
-    private final HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
 
     public UserResponseDto(User user) {
         this.id = user.getId();
@@ -25,6 +24,5 @@ public class UserResponseDto {
         this.department = user.getDepartment();
         this.authority = user.getAuthority();
         this.signupStatus = user.getSignupStatus();
-        this.homeStatus = user.getHomeStatus();
     }
 }

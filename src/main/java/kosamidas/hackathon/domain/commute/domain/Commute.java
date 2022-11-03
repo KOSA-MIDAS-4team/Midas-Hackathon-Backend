@@ -2,6 +2,7 @@ package kosamidas.hackathon.domain.commute.domain;
 
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
+import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import static javax.persistence.EnumType.STRING;
 import static javax.persistence.FetchType.*;
 
 @Getter
@@ -52,14 +54,20 @@ public class Commute {
     @NotNull
     private User user;
 
+    @NotNull
+    @Column(length = 8)
+    @Enumerated(STRING)
+    private HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
+
     @Builder
-    public Commute(LocalDate officeWentDate, int week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user) {
+    public Commute(LocalDate officeWentDate, Integer week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user, HomeStatus homeStatus) {
         this.officeWentDate = officeWentDate;
         this.week = week;
         this.officeWentAt = officeWentAt;
         this.quitedTime = quitedTime;
         this.walkWhether = walkWhether;
         this.user = user;
+        this.homeStatus = homeStatus;
     }
 
     // update

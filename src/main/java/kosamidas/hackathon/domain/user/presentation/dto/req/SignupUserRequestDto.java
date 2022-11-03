@@ -45,7 +45,6 @@ public class SignupUserRequestDto {
                 .department(Department.valueOf(department))
                 .authority(kosamidas.hackathon.domain.user.domain.type.Authority.ROLE_NONE)
                 .signupStatus(SignupStatus.WAITING)
-                .homeStatus(HomeStatus.NONE)
                 .build();
     }
 

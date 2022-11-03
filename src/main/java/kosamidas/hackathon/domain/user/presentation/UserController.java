@@ -49,4 +49,5 @@ public class UserController {
         System.out.println("date = " + date);
         return userService.getDateInfo(date);
     }
+
 }
