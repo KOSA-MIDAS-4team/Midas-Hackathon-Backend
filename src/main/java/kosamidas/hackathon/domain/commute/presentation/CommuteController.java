@@ -1,6 +1,7 @@
 package kosamidas.hackathon.domain.commute.presentation;
 
 import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
+import kosamidas.hackathon.domain.commute.presentation.dto.res.StartedAtResponseDto;
 import kosamidas.hackathon.domain.commute.service.CommuteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,8 @@ public class CommuteController {
     private final CommuteService commuteService;
 
     @PostMapping
-    public void startOfficeGo(@RequestParam("where") String where) {
-        commuteService.startOfficeGo(where);
+    public StartedAtResponseDto startOfficeGo(@RequestParam("where") String where) {
+        return commuteService.startOfficeGo(where);
     }
 
     @PutMapping

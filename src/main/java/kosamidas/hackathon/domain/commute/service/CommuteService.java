@@ -7,6 +7,7 @@ import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.RemainingMinutesOfWorkResponseDto;
+import kosamidas.hackathon.domain.commute.presentation.dto.res.StartedAtResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
@@ -29,7 +30,7 @@ public class CommuteService {
     private final CommuteFacade commuteFacade;
 
     @Transactional
-    public void startOfficeGo(String where) {
+    public StartedAtResponseDto startOfficeGo(String where) {
         isAlreadyQuited();
         if (!isAlreadyExistsCommuteToday()) {
             User user = userFacade.getCurrentUser();
@@ -43,7 +44,10 @@ public class CommuteService {
             commute.confirmUser(user);
             commute.updateWalkingWhether();
             commuteFacade.save(commute);
+            return new StartedAtResponseDto(LocalDateTime.now());
         }
+
+        return null;
     }
 
     private void isAlreadyQuited() {
