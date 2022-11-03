@@ -24,6 +24,12 @@ import static javax.persistence.EnumType.STRING;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 @DynamicInsert
+@Table(uniqueConstraints = {
+        @UniqueConstraint(
+                name = "user_uk",
+                columnNames = {"authId"}
+        )
+})
 @Entity
 public class User extends BaseTimeEntity {
 
