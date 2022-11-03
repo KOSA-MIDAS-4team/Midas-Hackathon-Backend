@@ -8,17 +8,14 @@ import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-@Validated
 @RequiredArgsConstructor
 @RequestMapping("/user")
-@CrossOrigin(origins = "http://13.209.36.143:8081", allowedHeaders = "*")
 @RestController
 public class UserController {
 
