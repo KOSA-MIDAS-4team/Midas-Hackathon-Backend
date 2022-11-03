@@ -2,8 +2,6 @@ package kosamidas.hackathon.domain.commute.presentation.dto.res;
 
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class OnEightHourBasisResponseDto {
 

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/user")
+@CrossOrigin(origins = "http://13.209.36.143:8081", allowedHeaders = "*")
 @RestController
 public class UserController {
 
@@ -51,7 +52,6 @@ public class UserController {
         return userService.getDateInfo(date);
     }
 
-    @CrossOrigin("*")
     @PutMapping("/update/img")
     public void uploadImg(@RequestParam("data") MultipartFile multipartFile) throws IOException {
         userService.updateImg(multipartFile);
