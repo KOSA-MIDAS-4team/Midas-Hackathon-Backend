@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .access("hasRole('ROLE_ADMIN')")
                 .antMatchers(POST, "/admin/**")
                 .access("hasRole('ROLE_ADMIN')")
+                .antMatchers(PUT, "/admin/**")
+                .access("hasRole('ROLE_ADMIN')")
                 .anyRequest().hasRole("USER")
                 .and()
                 .formLogin().disable()

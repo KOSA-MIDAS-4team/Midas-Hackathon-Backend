@@ -110,4 +110,7 @@ public class User extends BaseTimeEntity {
         this.authority = Authority.valueOf(authority);
     }
 
+    public void updateName(String name) {
+        this.name = name;
+    }
 }

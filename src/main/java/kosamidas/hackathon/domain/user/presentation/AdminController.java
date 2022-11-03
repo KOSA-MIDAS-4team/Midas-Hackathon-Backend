@@ -1,5 +1,6 @@
 package kosamidas.hackathon.domain.user.presentation;
 
+import kosamidas.hackathon.domain.user.presentation.dto.req.UpdateUserRequestDto;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.service.AdminService;
 import kosamidas.hackathon.domain.user.service.UserService;
@@ -35,5 +36,13 @@ public class AdminController {
             @RequestParam("signupStatus") String signupStatus
     ) {
         adminService.updateUserSignupStatus(authId, signupStatus);
+    }
+
+    @PutMapping("/update/{authId}")
+    public void updateUserInfo(
+            @PathVariable String authId,
+            @RequestBody UpdateUserRequestDto req
+    ) {
+        userService.updateUserInfo(authId, req);
     }
 }

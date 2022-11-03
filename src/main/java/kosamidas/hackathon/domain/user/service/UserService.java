@@ -7,6 +7,7 @@ import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
+import kosamidas.hackathon.domain.user.presentation.dto.req.UpdateUserRequestDto;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.verifier.CreateUserVerifier;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
@@ -57,5 +58,23 @@ public class UserService {
         return users.stream()
                 .map(UserResponseDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void updateUserInfo(String authId, UpdateUserRequestDto req) {
+        System.out.println("실행됨0");
+        User user = userFacade.getUserByAuthId(authId);
+        System.out.println("실행됨1");
+        if (req.getAuthority() != null) {
+            System.out.println("실행됨2");
+
+            user.updateAuthority(req.getAuthority());
+        }
+        System.out.println("실행됨3");
+        if (req.getName() != null) {
+            System.out.println("실행됨4");
+
+            user.updateName(req.getName());
+        }
     }
 }
