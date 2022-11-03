@@ -8,6 +8,7 @@ import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.domain.user.presentation.dto.req.SignupUserRequestDto;
 import kosamidas.hackathon.domain.user.presentation.dto.req.UpdateUserRequestDto;
+import kosamidas.hackathon.domain.user.presentation.dto.res.UserCommuteDateResponseDto;
 import kosamidas.hackathon.domain.user.presentation.dto.res.UserResponseDto;
 import kosamidas.hackathon.domain.user.verifier.CreateUserVerifier;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -69,5 +71,17 @@ public class UserService {
         if (req.getName() != null) {
             user.updateName(req.getName());
         }
+    }
+
+    public UserCommuteDateResponseDto getDateInfo(LocalDate date) {
+        User user = userFacade.getCurrentUser();
+        Optional<Commute> commuteOptional = commuteFacade.findAll()
+                .stream()
+                .findFirst()
+                .filter(commute -> commute.getUser().getId().equals(user.getId()))
+                .filter(commute -> date.getYear() == commute.getOfficeWentDate().getYear())
+                .filter(commute -> date.getMonthValue() == commute.getOfficeWentDate().getMonthValue())
+                .filter(commute -> date.getDayOfMonth() == commute.getOfficeWentDate().getDayOfMonth());
+        return commuteOptional.map(UserCommuteDateResponseDto::new).orElse(null);
     }
 }

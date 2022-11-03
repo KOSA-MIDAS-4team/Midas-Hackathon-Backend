@@ -39,6 +39,7 @@ public class Commute {
     private LocalDateTime officeWentAt;
 
     // 퇴근시간
+    @NotNull
     private LocalDateTime quitedTime;
 
     // 일을 하고 있는 상태인가/퇴근한 상태인가
