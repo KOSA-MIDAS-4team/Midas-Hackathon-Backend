@@ -25,12 +25,6 @@ public class AdminController {
         return new Result<>(users.size(), users);
     }
 
-    @GetMapping("/list") // 출근 중인 사람 리스트
-    public Result<List<UserResponseDto>> getUserByWalking() {
-        List<UserResponseDto> users = userService.getUserByWalking();
-        return new Result<>(users.size(), users);
-    }
-
     @PutMapping("/{authId}")
     public void updateUserSignupStatus(
             @PathVariable String authId,

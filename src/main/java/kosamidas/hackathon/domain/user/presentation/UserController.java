@@ -51,6 +51,12 @@ public class UserController {
         return new Result<>(users.size(), users);
     }
 
+    @GetMapping("/list") // 출근 중인 사람 리스트
+    public Result<List<UserResponseDto>> getUserByWalking() {
+        List<UserResponseDto> users = userService.getUserByWalking();
+        return new Result<>(users.size(), users);
+    }
+
     @GetMapping("/date")
     public UserCommuteDateResponseDto getDate(
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
