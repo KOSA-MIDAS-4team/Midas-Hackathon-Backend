@@ -15,10 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 @ServiceWithTransactionReadOnly
@@ -39,6 +38,7 @@ public class CommuteService {
                     .build();
             commute.confirmUser(user);
             commute.updateWalkingWhether();
+            commute.updateWeek(getWeek());
             commuteFacade.save(commute);
         }
     }
@@ -63,6 +63,11 @@ public class CommuteService {
                 .anyMatch(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
     }
 
+    private int getWeek() {
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.WEEK_OF_MONTH);
+    }
+
     @Transactional
     public OnEightHourBasisResponseDto doQuitedTime() {
         Long userId = userFacade.getCurrentUser().getId();
@@ -79,6 +84,7 @@ public class CommuteService {
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()
                 .filter(commute -> commute.getUser().getAuthId().equals(authId))
+                .filter(commute -> commute.getWeek() == getWeek())
                 .collect(Collectors.toList());
 
         // 2. 근무 시간을 모두 더함

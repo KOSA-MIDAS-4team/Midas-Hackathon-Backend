@@ -10,6 +10,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -26,25 +27,34 @@ public class Commute {
     private Long id;
 
     // 출근날짜
+    @NotNull
     private LocalDate officeWentDate;
 
+    // 출근 주차(ex: 2주차)
+    @NotNull
+    private Integer week;
+
     // 출근시간
+    @NotNull
     private LocalDateTime officeWentAt;
 
     // 퇴근시간
     private LocalDateTime quitedTime;
 
     // 일을 하고 있는 상태인가/퇴근한 상태인가
+    @NotNull
     @Enumerated(EnumType.STRING)
     private WalkWhether walkWhether;
 
     @ManyToOne(fetch = EAGER)
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @Builder
-    public Commute(LocalDate officeWentDate, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user) {
+    public Commute(LocalDate officeWentDate, int week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user) {
         this.officeWentDate = officeWentDate;
+        this.week = week;
         this.officeWentAt = officeWentAt;
         this.quitedTime = quitedTime;
         this.walkWhether = walkWhether;
@@ -70,6 +80,10 @@ public class Commute {
 
     public void updateQuitedWhether() {
         this.walkWhether = WalkWhether.QUITED;
+    }
+
+    public void updateWeek(int week) {
+        this.week = week;
     }
 
     // 연관관계 편의 메서드
