@@ -18,9 +18,8 @@ public class CommuteFacade {
         commuteRepository.save(commute);
     }
 
-    public Commute getCommuteByUserId(Long userId) {
-        return commuteRepository.findByUserId(userId)
-                .orElseThrow(() -> UserNotFoundException.EXCEPTION);
+    public List<Commute> getCommuteByUserId(Long userId) {
+        return commuteRepository.findByUserId(userId);
     }
 
     public List<Commute> findAll() {

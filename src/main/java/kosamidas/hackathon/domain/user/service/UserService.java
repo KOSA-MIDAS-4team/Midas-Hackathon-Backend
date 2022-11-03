@@ -79,33 +79,14 @@ public class UserService {
 
     public UserCommuteDateResponseDto getDateInfo(LocalDate date) {
         User user = userFacade.getCurrentUser();
-        List<Commute> commutes = commuteFacade.findAll()
+        Optional<Commute> commuteOptional = commuteFacade.findAll()
                 .stream()
-                .filter(commute -> {
-                    System.out.println("commute.getUser().getId() = " + commute.getUser().getId());
-                    System.out.println("currentUser = " + userFacade.getCurrentUser().getId());
-                    return commute.getUser().getId().equals(user.getId());
-                })
-                .filter(commute -> {
-                    System.out.println("date.getYear() = " + date.getYear());
-                    System.out.println("commute = " + commute.getOfficeWentDate().getYear());
-                    return date.getYear() == commute.getOfficeWentDate().getYear();
-                })
-                .filter(commute -> {
-                    System.out.println("date.getMonthValue() = " + date.getMonthValue());
-                    System.out.println("commute.getOfficeWentDate().getMonthValue() = " + commute.getOfficeWentDate().getMonthValue());
-                    return date.getMonthValue() == commute.getOfficeWentDate().getMonthValue();
-                })
-                .filter(commute -> {
-                    System.out.println("date.getDayOfMonth() = " + date.getDayOfMonth());
-                    System.out.println("commute = " + commute.getOfficeWentDate().getDayOfMonth());
-                    return date.getDayOfMonth() == commute.getOfficeWentDate().getDayOfMonth();
-                })
-                .collect(Collectors.toList());
-        if (!commutes.isEmpty()) {
-            return new UserCommuteDateResponseDto(commutes.get(0));
-        } else {
-            return null;
-        }
+                .filter(commute -> commute.getUser().getId().equals(user.getId()))
+                .filter(commute -> date.getYear() == commute.getOfficeWentDate().getYear())
+                .filter(commute -> date.getMonthValue() == commute.getOfficeWentDate().getMonthValue())
+                .filter(commute -> date.getDayOfMonth() == commute.getOfficeWentDate().getDayOfMonth())
+                .findFirst();
+
+        return commuteOptional.map(UserCommuteDateResponseDto::new).orElse(null);
     }
 }

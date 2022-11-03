@@ -1,7 +1,6 @@
 package kosamidas.hackathon.domain.user.presentation.dto.res;
 
 import kosamidas.hackathon.domain.commute.domain.Commute;
-import kosamidas.hackathon.domain.user.domain.User;
 import lombok.Getter;
 
 import java.time.LocalDateTime;

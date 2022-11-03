@@ -8,7 +8,6 @@ import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.OnEightHourBasisResponseDto;
 import kosamidas.hackathon.domain.commute.presentation.dto.res.RemainingMinutesOfWorkResponseDto;
 import kosamidas.hackathon.domain.user.domain.User;
-import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import kosamidas.hackathon.domain.user.facade.UserFacade;
 import kosamidas.hackathon.global.annotation.ServiceWithTransactionReadOnly;
 import lombok.RequiredArgsConstructor;
@@ -50,9 +49,9 @@ public class CommuteService {
     private void isAlreadyQuited() {
         Optional<Commute> commuteOptional = commuteFacade.findAll()
                 .stream()
-                .findFirst()
                 .filter(commute -> commute.getUser().getId().equals(userFacade.getCurrentUser().getId()))
-                .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()));
+                .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))
+                .findFirst();
 
         if (commuteOptional.isPresent()) {
             boolean isAlreadyQuited = commuteOptional.get().getWalkWhether().equals(WalkWhether.QUITED);
@@ -77,11 +76,23 @@ public class CommuteService {
     @Transactional
     public OnEightHourBasisResponseDto doQuitedTime() {
         Long userId = userFacade.getCurrentUser().getId();
-        Commute commute = commuteFacade.getCommuteByUserId(userId);
-        commute.updateQuitedTime(LocalDateTime.now());
-        commute.updateQuitedWhether();
-        long between = ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
-        return new OnEightHourBasisResponseDto(480 - between);
+
+        Optional<Commute> commuteOptional = commuteFacade.getCommuteByUserId(userId)
+                .stream()
+                .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))
+                .filter(commute -> commute.getUser().getId().equals(userId))
+                .findFirst();
+
+        if (commuteOptional.isPresent()) {
+            Commute commute = commuteOptional.get();
+            commute.updateQuitedTime(LocalDateTime.now());
+
+            commute.updateQuitedWhether();
+
+            long between = ChronoUnit.MINUTES.between(commute.getOfficeWentAt(), commute.getQuitedTime());
+            return new OnEightHourBasisResponseDto(480 - between);
+        }
+        return null;
     }
 
     public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek() {
