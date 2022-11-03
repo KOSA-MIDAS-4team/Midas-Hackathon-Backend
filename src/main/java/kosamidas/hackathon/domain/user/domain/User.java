@@ -52,6 +52,12 @@ public class User extends BaseTimeEntity {
     @Size(max = 4)
     private String name;
 
+    @Size(max = 256)
+    private String imgPath;
+
+    @Size(max = 512)
+    private String imgUrl;
+
     @NotNull
     @Column(length = 16)
     @Enumerated(STRING)
@@ -71,10 +77,12 @@ public class User extends BaseTimeEntity {
     private final List<Commute> commutes = new ArrayList<>();
 
     @Builder
-    public User(String authId, String password, String name, Department department, Authority authority, SignupStatus signupStatus) {
+    public User(String authId, String password, String name, String imgPath, String imgUrl, Department department, Authority authority, SignupStatus signupStatus) {
         this.authId = authId;
         this.password = password;
         this.name = name;
+        this.imgPath = imgPath;
+        this.imgUrl = imgUrl;
         this.department = department;
         this.authority = authority;
         this.signupStatus = signupStatus;

@@ -47,10 +47,11 @@ public class CommuteService {
     }
 
     private void isAlreadyQuited() {
+        System.out.println("LocalDate.now() = " + LocalDate.now());
         Optional<Commute> commuteOptional = commuteFacade.findAll()
                 .stream()
-                .filter(commute -> commute.getUser().getId().equals(userFacade.getCurrentUser().getId()))
                 .filter(commute -> commute.getOfficeWentDate().isEqual(LocalDate.now()))
+                .filter(commute -> commute.getUser().getId().equals(userFacade.getCurrentUser().getId()))
                 .findFirst();
 
         if (commuteOptional.isPresent()) {
