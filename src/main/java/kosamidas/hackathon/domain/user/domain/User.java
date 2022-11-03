@@ -3,7 +3,6 @@ package kosamidas.hackathon.domain.user.domain;
 import kosamidas.hackathon.domain.commute.domain.Commute;
 import kosamidas.hackathon.domain.user.domain.type.Authority;
 import kosamidas.hackathon.domain.user.domain.type.Department;
-import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
 import kosamidas.hackathon.domain.user.domain.type.SignupStatus;
 import kosamidas.hackathon.global.entity.BaseTimeEntity;
 import lombok.AccessLevel;

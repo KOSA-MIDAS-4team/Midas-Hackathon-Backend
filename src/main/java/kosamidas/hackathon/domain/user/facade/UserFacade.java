@@ -19,9 +19,13 @@ public class UserFacade {
     private final UserRepository userRepository;
     private final CreateUserVerifier createUserVerifier;
 
-    public void save(User user) {
+    public void saveAndEncodePassword(User user) {
         createUserVerifier.alreadyExistsUserVerifier(user);
         user.encodePassword(passwordEncoder);
+        userRepository.save(user);
+    }
+
+    public void save(User user) {
         userRepository.save(user);
     }
 

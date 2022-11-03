@@ -36,7 +36,7 @@ public class UserService {
     @Transactional
     public void createUser(SignupUserRequestDto req) {
         CreateUserVerifier.checkMatchedPassword(req.getPassword(), req.getCheckPassword());
-        userFacade.save(req.toEntity());
+        userFacade.saveAndEncodePassword(req.toEntity());
     }
 
     public UserResponseDto getCurrentUser() {
