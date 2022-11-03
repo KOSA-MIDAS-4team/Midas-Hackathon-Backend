@@ -101,7 +101,6 @@ public class CommuteService {
         return null;
     }
 
-    @Cacheable(value = "Commute", cacheManager = "cacheManager")
     public RemainingMinutesOfWorkResponseDto getRemainingHoursOfWorkThisWeek() {
         List<Commute> commutes = commuteFacade.findAll()
                 .stream()
