@@ -1,6 +1,7 @@
 package kosamidas.hackathon.domain.commute.service;
 
 import kosamidas.hackathon.domain.commute.domain.Commute;
+import kosamidas.hackathon.domain.commute.domain.type.WHERE;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import kosamidas.hackathon.domain.commute.exception.UserAlreadyQuited;
 import kosamidas.hackathon.domain.commute.facade.CommuteFacade;
@@ -29,7 +30,7 @@ public class CommuteService {
     private final CommuteFacade commuteFacade;
 
     @Transactional
-    public void startOfficeGo() {
+    public void startOfficeGo(String where) {
         isAlreadyQuited();
         if (!isAlreadyExistsCommuteToday()) {
             User user = userFacade.getCurrentUser();
@@ -38,7 +39,7 @@ public class CommuteService {
                     .officeWentAt(LocalDateTime.now())
                     .quitedTime(LocalDateTime.now())
                     .week(getWeek())
-                    .homeStatus(HomeStatus.NONE)
+                    .where(WHERE.valueOf(where))
                     .build();
             commute.confirmUser(user);
             commute.updateWalkingWhether();
@@ -97,4 +98,5 @@ public class CommuteService {
 
         return new RemainingMinutesOfWorkResponseDto(2400 - result);
     }
+
 }

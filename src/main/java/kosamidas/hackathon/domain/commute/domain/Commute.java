@@ -1,5 +1,6 @@
 package kosamidas.hackathon.domain.commute.domain;
 
+import kosamidas.hackathon.domain.commute.domain.type.WHERE;
 import kosamidas.hackathon.domain.user.domain.User;
 import kosamidas.hackathon.domain.commute.domain.type.WalkWhether;
 import kosamidas.hackathon.domain.user.domain.type.HomeStatus;
@@ -55,19 +56,19 @@ public class Commute {
     private User user;
 
     @NotNull
-    @Column(length = 8)
+    @Column(length = 12)
     @Enumerated(STRING)
-    private HomeStatus homeStatus; // 재택근무 상태(대기, 수락, 거절)
+    private WHERE wheres; // 회사 또는 집
 
     @Builder
-    public Commute(LocalDate officeWentDate, Integer week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user, HomeStatus homeStatus) {
+    public Commute(LocalDate officeWentDate, Integer week, LocalDateTime officeWentAt, LocalDateTime quitedTime, WalkWhether walkWhether, User user, WHERE where) {
         this.officeWentDate = officeWentDate;
         this.week = week;
         this.officeWentAt = officeWentAt;
         this.quitedTime = quitedTime;
         this.walkWhether = walkWhether;
         this.user = user;
-        this.homeStatus = homeStatus;
+        this.wheres = where;
     }
 
     // update

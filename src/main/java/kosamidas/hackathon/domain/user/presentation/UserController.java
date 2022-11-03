@@ -46,7 +46,6 @@ public class UserController {
     public UserCommuteDateResponseDto getDate(
             @RequestParam("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
     ) {
-        System.out.println("date = " + date);
         return userService.getDateInfo(date);
     }
 
